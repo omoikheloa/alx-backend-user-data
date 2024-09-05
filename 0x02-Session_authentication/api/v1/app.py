@@ -56,7 +56,7 @@ def forbidden(error) -> str:
 @app.before_request
 def before():
     """
-    Before request handler to ensure authentication
+    Before request.
     """
     if auth:
         paths = ['/api/v1/status/',
@@ -64,8 +64,8 @@ def before():
                  '/api/v1/auth_session/login/']
         if not auth.require_auth(request.path, paths):
             return
-        if not auth.authorization_header(request) and (
-            hasattr(auth, 'session_cookie') and not auth.session_cookie(request)):
+        if (not auth.authorization_header(request) and
+                not auth.session_cookie(request)):
             abort(401)
         request.current_user = auth.current_user(request)
         if not request.current_user:
